@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enkripsi/Dekripsi DES</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px; /* Meningkatkan padding */
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 400px; /* Meningkatkan lebar */
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px; /* Mengubah ukuran font untuk judul */
+        }
+
+        input[type="text"], select, input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            color: #333;
+            border: 1px solid #007bff;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #e7f1ff;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Enkripsi/Dekripsi Algoritma DES</h2>
+    <form id="desForm" method="POST" action="/">
+        <label for="mode">Mode:</label>
+        <select name="mode" id="mode" required>
+            <option value="encrypt">Enkripsi</option>
+            <option value="decrypt">Dekripsi</option>
+        </select>
+        <label for="text">Teks:</label>
+        <input type="text" name="text" required><br>
+        <label for="key">Kunci (8 karakter):</label>
+        <input type="text" name="key" maxlength="8" required><br>
+        <input type="submit" value="Kirim">
+    </form>
+    <div id="result" class="result"></div>
+</div>
+<script>
+    document.getElementById("desForm").onsubmit = function(event) {
+        event.preventDefault(); // Mencegah pengiriman form secara default
+        const formData = new FormData(this);
+        const data = new URLSearchParams(formData).toString();
+
+        fetch("/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: data,
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("result").textContent = data.result; // Menampilkan hasil
+        })
+        .catch(error => {
+            document.getElementById("result").textContent = "Terjadi kesalahan: " + error;
+        });
+    };
+</script>
+</body>
+</html>
+
